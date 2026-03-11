@@ -72,4 +72,5 @@ public final class Constants {
 
   // Autonomous constants
   public static Pose2d autonomousDestination = new Pose2d(2, 2, new Rotation2d(0.5));
+  public static Pose2d testAutopilotPosition = new Pose2d(3.063, 3.502, new Rotation2d(0.000));
 }

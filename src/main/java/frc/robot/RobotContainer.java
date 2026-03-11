@@ -9,7 +9,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -240,15 +239,18 @@ public class RobotContainer {
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
     // Reset gyro to 0° when B button is pressed
-    controller
-        .b()
-        .onTrue(
-            Commands.runOnce(
-                    () ->
-                        drive.setPose(
-                            new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
-                    drive)
-                .ignoringDisable(true));
+    // controller
+    //     .b()
+    //     .onTrue(
+    //         Commands.runOnce(
+    //                 () ->
+    //                     drive.setPose(
+    //                         new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
+    //                 drive)
+    //             .ignoringDisable(true));
+
+    controller.b().whileTrue(DriveCommands.autoDriveToPose(drive, Constants.testAutopilotPosition));
+
     // controller
     //     .leftBumper()
     //     .whileTrue(
@@ -273,7 +275,7 @@ public class RobotContainer {
             Commands.parallel(
                 transfer.manualRollBackward(0.6),
                 floorRollers.rollInwardsCommand(0.7),
-                shooter.setVelocityCommand(45),
+                // shooter.setVelocityCommand(45),
                 diagonAlley.rollOutwards(0.3)));
     controller
         .leftBumper()
@@ -303,6 +305,7 @@ public class RobotContainer {
                 () -> -controller.getLeftX(),
                 () -> Constants.mirrorAlliance(Constants.hubTarget)));
     //    .onFalse(hood.CommandGoToLowestAngle());
+    controller.rightTrigger().onFalse(shooter.setVelocityCommand(0));
 
     controller.y().onTrue(hood.runCurrentZeroing());
   }
