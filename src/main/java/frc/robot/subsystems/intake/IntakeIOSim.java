@@ -34,4 +34,16 @@ public class IntakeIOSim implements IntakeIO {
   public void setRollerOpenLoop(double output) {
     lastRollerOutput = output;
   }
+
+  @Override
+  public void setVoltage(double volts) {
+    // Not simulated; track duty as volts/12 so updateInputs reports a consistent value
+    lastRollerOutput = volts / 12.0;
+  }
+
+  @Override
+  public void resetEncoder(double position) {
+    // Sim: set position to provided value so subsequent updateInputs reflects it
+    lastPivotTargetInches = position;
+  }
 }

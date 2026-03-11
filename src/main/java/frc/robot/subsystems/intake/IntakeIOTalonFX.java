@@ -7,6 +7,7 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -31,6 +32,7 @@ public class IntakeIOTalonFX implements IntakeIO {
 
   // Control requests (reused)
   private final MotionMagicVoltage pivotMotionRequest = new MotionMagicVoltage(0);
+  private VoltageOut voltageOut = new VoltageOut(0.0);
 
   public IntakeIOTalonFX() {
     pivotTalon = new TalonFX(IntakeConstants.pivotMotorCANID, IntakeConstants.kCANBus);
@@ -105,6 +107,16 @@ public class IntakeIOTalonFX implements IntakeIO {
   @Override
   public void setPivotMotionMagicPosition(double inches) {
     pivotTalon.setControl(pivotMotionRequest.withPosition(inches));
+  }
+
+  @Override
+  public void setVoltage(double volts) {
+    pivotTalon.setControl(voltageOut.withOutput(volts));
+  }
+
+  @Override
+  public void resetEncoder(double position) {
+    pivotTalon.setPosition(position);
   }
 
   @Override
