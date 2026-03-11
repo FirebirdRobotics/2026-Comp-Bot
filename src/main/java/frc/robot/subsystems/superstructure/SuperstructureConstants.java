@@ -42,28 +42,28 @@ public class SuperstructureConstants {
 
   public static final double latency = 0.15;
   public static final double totalExitVelocity = 50; // constant speed
-  public static final double speedInterpolationData[][] = {
-    {1.0, 1.0},
-    {2.0, 2.0}
-  };
+  // public static final double speedInterpolationData[][] = {
+  //   {1.0, 1.0},
+  //   {2.0, 2.0}
+  // };
   public static final double hoodInterpolationData[][] = {
     {1.0, 1.0},
     {2.0, 2.0}
   };
 
-  public class SpeedInterpolationMap extends InterpolatingDoubleTreeMap {
-    private InterpolatingDoubleTreeMap map = new InterpolatingDoubleTreeMap();
+  // public class SpeedInterpolationMap extends InterpolatingDoubleTreeMap {
+  //   private InterpolatingDoubleTreeMap map = new InterpolatingDoubleTreeMap();
 
-    public SpeedInterpolationMap() {
-      for (double[] i : speedInterpolationData) {
-        map.put(i[0], i[1]);
-      }
-    }
+  //   public SpeedInterpolationMap() {
+  //     for (double[] i : speedInterpolationData) {
+  //       map.put(i[0], i[1]);
+  //     }
+  //   }
 
-    public double get(double key) {
-      return map.get(key);
-    }
-  }
+  //   public double get(double key) {
+  //     return map.get(key);
+  //   }
+  // }
 
   public class HoodInterpolationMap extends InterpolatingDoubleTreeMap {
     private InterpolatingDoubleTreeMap map = new InterpolatingDoubleTreeMap();
