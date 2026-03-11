@@ -33,7 +33,6 @@ import frc.robot.subsystems.floorRollers.FloorRollersIO;
 import frc.robot.subsystems.floorRollers.FloorRollersIOSim;
 import frc.robot.subsystems.floorRollers.FloorRollersIOTalonFX;
 import frc.robot.subsystems.hood.Hood;
-import frc.robot.subsystems.hood.HoodConstants;
 import frc.robot.subsystems.hood.HoodIO;
 import frc.robot.subsystems.hood.HoodIOSim;
 import frc.robot.subsystems.hood.HoodIOTalonFX;
@@ -291,10 +290,13 @@ public class RobotContainer {
     //             diagonAlley.Break(0)));
     // controller.leftBumper().onFalse(shooter.setVelocityCommand(0));
 
-    controller
-        .leftBumper()
-        .onTrue(hood.CommandGoToAngle(HoodConstants.highestAngle - 0.5)); // Test angle
-    controller.leftBumper().onFalse(hood.CommandGoToLowestAngle());
+    // controller
+    //     .leftBumper()
+    //     .onTrue(hood.CommandGoToAngle(HoodConstants.highestAngle - 0.5)); // Test angle
+    // controller.leftBumper().onFalse(hood.CommandGoToLowestAngle());
+
+    controller.leftBumper().onTrue(intake.currentZeroFrontHardstop()); // Test angle
+    controller.leftBumper().onFalse(intake.currentZeroBackHardstop());
 
     // controller.rightBumper().whileTrue(intake.goToFramePerimeterPositionCommand());
 

@@ -26,7 +26,7 @@ public class Intake extends SubsystemBase {
     this.io = io;
   }
 
-  public static final double ZEROING_CURRENT_THRESHOLD_AMPS = 15.9;
+  public static final double ZEROING_CURRENT_THRESHOLD_AMPS = 30;
 
   /** Extend pivot to an absolute distance in inches. */
   public void extendToDistance(double inches) {
@@ -83,7 +83,10 @@ public class Intake extends SubsystemBase {
   public Command currentZeroFrontHardstop() {
     return this.run(() -> io.setVoltage(+2.0))
         .until(() -> Math.abs(pivotCurrentFilterValue) > ZEROING_CURRENT_THRESHOLD_AMPS)
-    .andThen(Commands.parallel(Commands.print("Intake Front Zeroed"), Commands.runOnce(() -> io.resetEncoder(4.197998))))
+        .andThen(
+            Commands.parallel(
+                Commands.print("Intake Front Zeroed"),
+                Commands.runOnce(() -> io.resetEncoder(4.197998))))
         .andThen(() -> io.setVoltage(0.0));
   }
 
@@ -91,7 +94,10 @@ public class Intake extends SubsystemBase {
   public Command currentZeroBackHardstop() {
     return this.run(() -> io.setVoltage(-2.0))
         .until(() -> Math.abs(pivotCurrentFilterValue) > ZEROING_CURRENT_THRESHOLD_AMPS)
-    .andThen(Commands.parallel(Commands.print("Intake Back Zeroed"), Commands.runOnce(() -> io.resetEncoder(0.014404))))
+        .andThen(
+            Commands.parallel(
+                Commands.print("Intake Back Zeroed"),
+                Commands.runOnce(() -> io.resetEncoder(0.014404))))
         .andThen(() -> io.setVoltage(0.0));
   }
 
