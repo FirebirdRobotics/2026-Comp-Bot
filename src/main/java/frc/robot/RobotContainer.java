@@ -297,7 +297,7 @@ public class RobotContainer {
     controller
         .rightTrigger()
         .whileTrue(
-            superstructure.shootOnTheFly(
+            superstructure.shootOnTheFlyNew(
                 drive,
                 hood,
                 shooter,

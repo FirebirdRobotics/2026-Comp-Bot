@@ -152,9 +152,7 @@ public class Superstructure extends SubsystemBase {
             drive, xSupplier, ySupplier, () -> new Rotation2d(angle)),
         hood.CommandGoToAngle(pitch),
         Commands.sequence(
-            shooter.setVelocityCommand(totalExitVelocity),
-            Commands.waitSeconds(1),
-            shooter.setVelocityCommand(0)));
+            shooter.setVelocityCommand(totalExitVelocity)));
   }
 
   public Command shootOnTheFlyNew(
@@ -196,8 +194,6 @@ public class Superstructure extends SubsystemBase {
             drive, xSupplier, ySupplier, () -> new Rotation2d(angle)),
         hood.CommandGoToAngle(pitch),
         Commands.sequence(
-            shooter.setVelocityCommand(totalExitVelocity),
-            Commands.waitSeconds(1),
-            shooter.setVelocityCommand(0)));
+            shooter.setVelocityCommand(totalExitVelocity)));
   }
 }
