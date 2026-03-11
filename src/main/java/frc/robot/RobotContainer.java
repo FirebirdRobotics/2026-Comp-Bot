@@ -300,19 +300,11 @@ public class RobotContainer {
                 () -> -controller.getLeftX(),
                 () -> Constants.mirrorAlliance(Constants.hubTarget)));
 
-    controller
-        .rightTrigger()
-        .whileFalse(
-            hood.CommandGoToLowestAngle()
-        );
+    controller.rightTrigger().whileFalse(hood.CommandGoToLowestAngle());
 
-    controller
-        .leftTrigger()
-        .whileTrue(superstructure.guardedShoot(drive, shooter));
+    controller.leftTrigger().whileTrue(superstructure.guardedShoot(drive, shooter));
 
-    controller
-        .leftTrigger()
-        .whileFalse(shooter.setVelocityCommand(0));
+    controller.leftTrigger().whileFalse(shooter.setVelocityCommand(0));
 
     controller
         .leftTrigger()

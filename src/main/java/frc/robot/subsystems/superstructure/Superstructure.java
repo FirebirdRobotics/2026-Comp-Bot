@@ -157,14 +157,15 @@ public class Superstructure extends SubsystemBase {
 
   private static Translation2d shouldBeTarget = new Translation2d();
 
-  public Command guardedShoot(Drive drive, Shooter shooter){
-    if((((Math.PI / 2)
-                    - Math.atan2(
-                        shouldBeTarget.getX() - drive.getPose().getX(),
-                        shouldBeTarget.getY() - drive.getPose().getY())) - drive.getPose().getRotation().getRadians()) < 0.01){
+  public Command guardedShoot(Drive drive, Shooter shooter) {
+    if ((((Math.PI / 2)
+                - Math.atan2(
+                    shouldBeTarget.getX() - drive.getPose().getX(),
+                    shouldBeTarget.getY() - drive.getPose().getY()))
+            - drive.getPose().getRotation().getRadians())
+        < 0.01) {
       return shooter.setVelocityCommand(totalExitVelocity);
-    }
-    else{
+    } else {
       return Commands.none();
     }
   }
