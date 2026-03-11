@@ -249,6 +249,7 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
                     drive)
                 .ignoringDisable(true));
+
     // controller
     //     .leftBumper()
     //     .whileTrue(
@@ -267,30 +268,15 @@ public class RobotContainer {
     // controller.leftBumper().onTrue(shooter.setVelocityCommand(5)); // Test angle
     // controller.leftBumper().onFalse(shooter.setVelocityCommand(0));
 
+    // controller.rightBumper().whileTrue(intake.goToFramePerimeterPositionCommand());
+
     controller
-        .leftBumper()
+        .rightTrigger()
         .onTrue(
             Commands.parallel(
                 transfer.manualRollBackward(0.6),
                 floorRollers.rollInwardsCommand(0.7),
-                shooter.setVelocityCommand(45),
                 diagonAlley.rollOutwards(0.3)));
-    controller
-        .leftBumper()
-        .onFalse(
-            Commands.parallel(
-                transfer.manualRollForwards(0),
-                floorRollers.rollInwardsCommand(0),
-                // shooter.setVelocityCommand(0),
-                diagonAlley.Break(0)));
-    // controller.leftBumper().onFalse(shooter.setVelocityCommand(0));
-
-    // controller
-    //     .leftBumper()
-    //     .onTrue(hood.CommandGoToAngle(HoodConstants.highestAngle - 0.5)); // Test angle
-    // controller.leftBumper().onFalse(hood.CommandGoToLowestAngle());
-
-    // controller.rightBumper().whileTrue(intake.goToFramePerimeterPositionCommand());
 
     controller
         .rightTrigger()
@@ -302,7 +288,16 @@ public class RobotContainer {
                 () -> -controller.getLeftY(),
                 () -> -controller.getLeftX(),
                 () -> Constants.mirrorAlliance(Constants.hubTarget)));
-    //    .onFalse(hood.CommandGoToLowestAngle());
+
+    controller
+        .rightTrigger()
+        .onFalse(
+            Commands.parallel(
+                transfer.manualRollForwards(0),
+                floorRollers.rollInwardsCommand(0),
+                shooter.setVelocityCommand(0),
+                // hood.CommandGoToLowestAngle(),
+                diagonAlley.Break(0)));
 
     controller.y().onTrue(hood.runCurrentZeroing());
   }
