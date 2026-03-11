@@ -250,11 +250,6 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
                     drive)
                 .ignoringDisable(true));
-
-    // Control bindings for superstructure
-    // controller.leftBumper().whileTrue(superstructure.intake());
-    // controller.rightBumper().whileTrue(superstructure.launch());
-
     // controller
     //     .leftBumper()
     //     .whileTrue(
@@ -273,32 +268,31 @@ public class RobotContainer {
     // controller.leftBumper().onTrue(shooter.setVelocityCommand(5)); // Test angle
     // controller.leftBumper().onFalse(shooter.setVelocityCommand(0));
 
-    // controller
-    //     .leftBumper()
-    //     .onTrue(
-    //         Commands.parallel(
-    //             transfer.manualRollBackward(0.6),
-    //             floorRollers.rollInwardsCommand(0.7),
-    //             shooter.setVelocityCommand(25),
-    //             diagonAlley.rollOutwards(0.3)));
-    // controller
-    //     .leftBumper()
-    //     .onFalse(
-    //         Commands.parallel(
-    //             transfer.manualRollForwards(0),
-    //             floorRollers.rollInwardsCommand(0),
-    //             shooter.setVelocityCommand(0),
-    //             diagonAlley.Break(0)));
-    // controller.leftBumper().onFalse(shooter.setVelocityCommand(0));
-
     controller
         .leftBumper()
-        .onTrue(hood.CommandGoToAngle(HoodConstants.highestAngle - 0.5)); // Test angle
-    controller.leftBumper().onFalse(hood.CommandGoToLowestAngle());
+        .onTrue(
+            Commands.parallel(
+                transfer.manualRollBackward(0.6),
+                floorRollers.rollInwardsCommand(0.7),
+                shooter.setVelocityCommand(25),
+                diagonAlley.rollOutwards(0.3)));
+    controller
+        .leftBumper()
+        .onFalse(
+            Commands.parallel(
+                transfer.manualRollForwards(0),
+                floorRollers.rollInwardsCommand(0),
+                shooter.setVelocityCommand(0),
+                diagonAlley.Break(0)));
+    controller.leftBumper().onFalse(shooter.setVelocityCommand(0));
+
+    // controller
+    //     .leftBumper()
+    //     .onTrue(hood.CommandGoToAngle(HoodConstants.highestAngle - 0.5)); // Test angle
+    // controller.leftBumper().onFalse(hood.CommandGoToLowestAngle());
 
     // controller.rightBumper().whileTrue(intake.goToFramePerimeterPositionCommand());
 
-    // controller.rightTrigger().whileTrue(superstructure.eject());
     controller
         .rightTrigger()
         .whileTrue(
