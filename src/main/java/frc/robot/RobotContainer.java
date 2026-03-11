@@ -282,7 +282,7 @@ public class RobotContainer {
     controller.rightBumper().whileTrue(intake.goToFramePerimeterPositionCommand());
 
     controller
-        .rightTrigger()
+        .leftTrigger()
         .onTrue(
             Commands.parallel(
                 transfer.manualRollBackward(0.6),
@@ -302,12 +302,24 @@ public class RobotContainer {
 
     controller
         .rightTrigger()
+        .whileFalse(
+            hood.CommandGoToLowestAngle()
+        );
+
+    controller
+        .leftTrigger()
+        .whileTrue(superstructure.guardedShoot(drive, shooter));
+
+    controller
+        .leftTrigger()
+        .whileFalse(shooter.setVelocityCommand(0));
+
+    controller
+        .leftTrigger()
         .onFalse(
             Commands.parallel(
                 transfer.manualRollForwards(0),
                 floorRollers.rollInwardsCommand(0),
-                shooter.setVelocityCommand(0),
-                // hood.CommandGoToLowestAngle(),
                 diagonAlley.Break(0)));
 
     controller.y().onTrue(hood.runCurrentZeroing());

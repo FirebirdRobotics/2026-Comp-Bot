@@ -13,6 +13,7 @@ import static frc.robot.subsystems.superstructure.SuperstructureConstants.launch
 import static frc.robot.subsystems.superstructure.SuperstructureConstants.launchingLauncherVoltage;
 import static frc.robot.subsystems.superstructure.SuperstructureConstants.spinUpFeederVoltage;
 import static frc.robot.subsystems.superstructure.SuperstructureConstants.spinUpSeconds;
+import static frc.robot.subsystems.superstructure.SuperstructureConstants.totalExitVelocity;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -154,6 +155,20 @@ public class Superstructure extends SubsystemBase {
   //       Commands.sequence(shooter.setVelocityCommand(totalExitVelocity)));
   // }
 
+  private static Translation2d shouldBeTarget = new Translation2d();
+
+  public Command guardedShoot(Drive drive, Shooter shooter){
+    if((((Math.PI / 2)
+                    - Math.atan2(
+                        shouldBeTarget.getX() - drive.getPose().getX(),
+                        shouldBeTarget.getY() - drive.getPose().getY())) - drive.getPose().getRotation().getRadians()) < 0.01){
+      return shooter.setVelocityCommand(totalExitVelocity);
+    }
+    else{
+      return Commands.none();
+    }
+  }
+
   public Command shootOnTheFlyNew(
       Drive drive,
       Hood hood,
@@ -182,15 +197,14 @@ public class Superstructure extends SubsystemBase {
     // offset
     Translation2d target = gSupplier.get().minus(futurePose);
 
-    double angle = target.getAngle().getRadians();
-
     // Find parabola angle to compensate for horizontal speed
     double pitch = hoodAngleMap.get(target.getNorm());
+
+    shouldBeTarget = target;
 
     // Parallel because drive at angle takes a while to terminate
     return Commands.parallel(
         DriveCommands.joystickRotateToward(drive, xSupplier, ySupplier, () -> target),
-        hood.CommandGoToAngle(pitch),
-        Commands.sequence(shooter.setVelocityCommand(SuperstructureConstants.totalExitVelocity)));
+        hood.CommandGoToAngle(pitch));
   }
 }
