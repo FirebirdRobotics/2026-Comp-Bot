@@ -250,17 +250,17 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    // controller
-    //     .leftBumper()
-    //     .whileTrue(
-    //         Commands.sequence(
-    //             intake.goToDeployedPositionCommand(),
-    //             intake.setRollerMotorPercentOutputCommand(0.5)));
+    controller
+        .leftBumper()
+        .whileTrue(
+            Commands.sequence(
+                intake.goToDeployedPositionCommand(),
+                intake.setRollerMotorPercentOutputCommand(0.5)));
 
-    // controller.leftBumper().onTrue(intake.setRollerMotorPercentOutputCommand(0.3));
-    // controller.leftBumper().onFalse(intake.setRollerMotorPercentOutputCommand(0));
+    controller.leftBumper().onTrue(intake.setRollerMotorPercentOutputCommand(0.3));
+    controller.leftBumper().onFalse(intake.setRollerMotorPercentOutputCommand(0));
 
-    // controller.rightBumper().whileTrue(intake.goToFramePerimeterPositionCommand());
+    controller.rightBumper().whileTrue(intake.goToFramePerimeterPositionCommand());
 
     controller
         .rightTrigger()
