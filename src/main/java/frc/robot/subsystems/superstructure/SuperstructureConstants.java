@@ -41,7 +41,7 @@ public class SuperstructureConstants {
   public static final double controlSystemsVelocityRadPerSec = -344.0; // -400
 
   public static final double latency = 0.15;
-  public static final double totalExitVelocity = 15; // constant speed
+  public static final double totalExitVelocity = 50; // constant speed
   public static final double speedInterpolationData[][] = {
     {1.0, 1.0},
     {2.0, 2.0}

@@ -202,8 +202,7 @@ public class RobotContainer {
         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Current Zeroing", hood.runCurrentZeroing());
+    autoChooser.addOption("Current Zeroing", hood.runCurrentZeroing());
     autoChooser.addDefaultOption(
         "Drive to Start Pose",
         DriveCommands.autoDriveToPose(drive, Constants.autonomousDestination));
@@ -297,14 +296,14 @@ public class RobotContainer {
     controller
         .rightTrigger()
         .whileTrue(
-            superstructure.shootOnTheFly(
+            superstructure.shootOnTheFlyNew(
                 drive,
                 hood,
                 shooter,
                 () -> -controller.getLeftY(),
                 () -> -controller.getLeftX(),
-                () -> Constants.mirrorAlliance(Constants.hubTarget)))
-        .onFalse(hood.CommandGoToLowestAngle());
+                () -> Constants.mirrorAlliance(Constants.hubTarget)));
+    //    .onFalse(hood.CommandGoToLowestAngle());
 
     controller.y().onTrue(hood.runCurrentZeroing());
   }
