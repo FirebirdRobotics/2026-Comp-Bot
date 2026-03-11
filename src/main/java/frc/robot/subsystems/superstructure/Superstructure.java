@@ -14,7 +14,6 @@ import static frc.robot.subsystems.superstructure.SuperstructureConstants.launch
 import static frc.robot.subsystems.superstructure.SuperstructureConstants.spinUpFeederVoltage;
 import static frc.robot.subsystems.superstructure.SuperstructureConstants.spinUpSeconds;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -190,9 +189,8 @@ public class Superstructure extends SubsystemBase {
 
     // Parallel because drive at angle takes a while to terminate
     return Commands.parallel(
-        DriveCommands.joystickDriveAtAngle(
-            drive, xSupplier, ySupplier, () -> new Rotation2d(angle)),
-        hood.CommandGoToAngle(pitch));
-    // Commands.sequence(shooter.setVelocityCommand(totalExitVelocity)));
+        DriveCommands.joystickRotateToward(drive, xSupplier, ySupplier, () -> target),
+        hood.CommandGoToAngle(pitch),
+        Commands.sequence(shooter.setVelocityCommand(SuperstructureConstants.totalExitVelocity)));
   }
 }

@@ -38,7 +38,7 @@ public class VisionConstants {
           27.5 / 100,
           17.5 / 100,
           new Rotation3d(
-              Math.toRadians(18.323777), Math.toRadians(-26.336203), Math.toRadians(-42.786222)));
+              Math.toRadians(22.323777), Math.toRadians(-26.336203), Math.toRadians(-42.786222)));
 
   // Basic filtering thresholds
   public static double maxAmbiguity = 0.3;
