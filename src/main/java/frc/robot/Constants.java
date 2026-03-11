@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotBase;
 import java.util.function.Supplier;
+import java.util.Optional;
 
 /**
  * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
@@ -36,11 +37,15 @@ public final class Constants {
   }
 
   // Alliance
-  public static final Supplier<Alliance> alliance =
-      () ->
-          DriverStation.getAlliance().isPresent()
-              ? DriverStation.getAlliance().get()
-              : Alliance.Red;
+  // public static final Supplier<Alliance> alliance =
+  //     () ->
+  //         DriverStation.getAlliance().isPresent()
+  //             ? DriverStation.getAlliance().get()
+  //             : Alliance.Red;
+  public static final Optional<Alliance> alliance =
+    Optional.of(DriverStation.getAlliance().isPresent()
+               ? DriverStation.getAlliance().get()
+               : Alliance.Red);
 
   // Helper functions
   public static final Translation2d mirrorAlliance(Translation2d t) {
