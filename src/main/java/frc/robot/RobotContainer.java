@@ -257,16 +257,8 @@ public class RobotContainer {
     //             intake.goToDeployedPositionCommand(),
     //             intake.setRollerMotorPercentOutputCommand(0.5)));
 
-    // Uncomment Above command and comment below command once lintake deploying is fixed
-
     // controller.leftBumper().onTrue(intake.setRollerMotorPercentOutputCommand(0.3));
     // controller.leftBumper().onFalse(intake.setRollerMotorPercentOutputCommand(0));
-
-    // controller.leftBumper().onTrue(hood.CommandGoToAngle(0.43)); // Test angle
-    // controller.leftBumper().onFalse(hood.CommandGoToLowestAngle());
-
-    // controller.leftBumper().onTrue(shooter.setVelocityCommand(5)); // Test angle
-    // controller.leftBumper().onFalse(shooter.setVelocityCommand(0));
 
     // controller.rightBumper().whileTrue(intake.goToFramePerimeterPositionCommand());
 
