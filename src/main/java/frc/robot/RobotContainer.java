@@ -148,9 +148,9 @@ public class RobotContainer {
             new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVision(
-                    VisionConstants.cameraNameRight, VisionConstants.robotToCameraRight),
-                new VisionIOPhotonVision(
-                    VisionConstants.cameraNameLeft, VisionConstants.robotToCameraLeft));
+                    VisionConstants.cameraNameRight, VisionConstants.robotToCameraRight));
+                // new VisionIOPhotonVision(
+                //     VisionConstants.cameraNameLeft, VisionConstants.robotToCameraLeft));
 
         superstructure = new Superstructure(new SuperstructureIOSim());
         intake = new Intake(new IntakeIOSim());
