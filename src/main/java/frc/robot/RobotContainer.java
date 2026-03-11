@@ -101,8 +101,8 @@ public class RobotContainer {
             new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVision(
-                    VisionConstants.cameraNameRight, VisionConstants.robotToCameraRight),
-                new VisionIOPhotonVision(
+                    VisionConstants.cameraNameRight, VisionConstants.robotToCameraRight));
+                //new VisionIOPhotonVision(
                     VisionConstants.cameraNameLeft, VisionConstants.robotToCameraLeft));
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
@@ -149,8 +149,8 @@ public class RobotContainer {
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVision(
                     VisionConstants.cameraNameRight, VisionConstants.robotToCameraRight));
-                // new VisionIOPhotonVision(
-                //     VisionConstants.cameraNameLeft, VisionConstants.robotToCameraLeft));
+        // new VisionIOPhotonVision(
+        //     VisionConstants.cameraNameLeft, VisionConstants.robotToCameraLeft));
 
         superstructure = new Superstructure(new SuperstructureIOSim());
         intake = new Intake(new IntakeIOSim());
