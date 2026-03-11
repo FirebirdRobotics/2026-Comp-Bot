@@ -302,8 +302,8 @@ public class RobotContainer {
                 shooter,
                 () -> -controller.getLeftY(),
                 () -> -controller.getLeftX(),
-                () -> Constants.mirrorAlliance(Constants.hubTarget)))
-        .onFalse(hood.CommandGoToLowestAngle());
+                () -> Constants.mirrorAlliance(Constants.hubTarget)));
+    //    .onFalse(hood.CommandGoToLowestAngle());
 
     controller.y().onTrue(hood.runCurrentZeroing());
   }

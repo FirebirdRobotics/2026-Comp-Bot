@@ -15,13 +15,11 @@ import static frc.robot.subsystems.superstructure.SuperstructureConstants.spinUp
 import static frc.robot.subsystems.superstructure.SuperstructureConstants.spinUpSeconds;
 import static frc.robot.subsystems.superstructure.SuperstructureConstants.totalExitVelocity;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.hood.Hood;
 import frc.robot.subsystems.shooter.Shooter;
@@ -148,11 +146,10 @@ public class Superstructure extends SubsystemBase {
 
     // Parallel because drive at angle takes a while to terminate
     return Commands.parallel(
-        DriveCommands.joystickDriveAtAngle(
-            drive, xSupplier, ySupplier, () -> new Rotation2d(angle)),
-        hood.CommandGoToAngle(pitch),
-        Commands.sequence(
-            shooter.setVelocityCommand(totalExitVelocity)));
+        // DriveCommands.joystickDriveAtAngle(
+        //    drive, xSupplier, ySupplier, () -> new Rotation2d(angle)),
+        // hood.CommandGoToAngle(pitch),
+        Commands.sequence(shooter.setVelocityCommand(totalExitVelocity)));
   }
 
   public Command shootOnTheFlyNew(
@@ -190,10 +187,9 @@ public class Superstructure extends SubsystemBase {
 
     // Parallel because drive at angle takes a while to terminate
     return Commands.parallel(
-        DriveCommands.joystickDriveAtAngle(
-            drive, xSupplier, ySupplier, () -> new Rotation2d(angle)),
-        hood.CommandGoToAngle(pitch),
-        Commands.sequence(
-            shooter.setVelocityCommand(totalExitVelocity)));
+        // DriveCommands.joystickDriveAtAngle(
+        //    drive, xSupplier, ySupplier, () -> new Rotation2d(angle)),
+        // hood.CommandGoToAngle(pitch),
+        Commands.sequence(shooter.setVelocityCommand(totalExitVelocity)));
   }
 }
