@@ -24,7 +24,6 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.hood.Hood;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.superstructure.SuperstructureConstants.HoodInterpolationMap;
-import frc.robot.subsystems.superstructure.SuperstructureConstants.SpeedInterpolationMap;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
@@ -111,8 +110,10 @@ public class Superstructure extends SubsystemBase {
   //     DoubleSupplier ySupplier,
   //     Supplier<Translation2d> gSupplier) {
   //   // This maps distance to horizontal speed
-  //   // To calculate these values, we need to try shooting from a fixed (non-zero) angle at different
-  //   // velocities and then record the distance it shoots; only a few data points should be necessary
+  //   // To calculate these values, we need to try shooting from a fixed (non-zero) angle at
+  // different
+  //   // velocities and then record the distance it shoots; only a few data points should be
+  // necessary
   //   final SpeedInterpolationMap shooterSpeedMap =
   //       (new SuperstructureConstants()).new SpeedInterpolationMap();
 
@@ -136,7 +137,8 @@ public class Superstructure extends SubsystemBase {
   //       target
   //           .div(target.getNorm())
   //           .times(shooterSpeedMap.get(target.getNorm()))
-  //           .minus(new Translation2d(robotSpeeds.vxMetersPerSecond, robotSpeeds.vyMetersPerSecond));
+  //           .minus(new Translation2d(robotSpeeds.vxMetersPerSecond,
+  // robotSpeeds.vyMetersPerSecond));
 
   //   double angle = shot.getAngle().getRadians();
 

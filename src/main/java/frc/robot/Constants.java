@@ -13,7 +13,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotBase;
-import java.util.function.Supplier;
 import java.util.Optional;
 
 /**
@@ -43,9 +42,10 @@ public final class Constants {
   //             ? DriverStation.getAlliance().get()
   //             : Alliance.Red;
   public static final Optional<Alliance> alliance =
-    Optional.of(DriverStation.getAlliance().isPresent()
-               ? DriverStation.getAlliance().get()
-               : Alliance.Red);
+      Optional.of(
+          DriverStation.getAlliance().isPresent()
+              ? DriverStation.getAlliance().get()
+              : Alliance.Red);
 
   // Helper functions
   public static final Translation2d mirrorAlliance(Translation2d t) {

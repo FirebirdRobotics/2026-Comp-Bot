@@ -273,7 +273,7 @@ public class RobotContainer {
             Commands.parallel(
                 transfer.manualRollBackward(0.6),
                 floorRollers.rollInwardsCommand(0.7),
-                shooter.setVelocityCommand(25),
+                shooter.setVelocityCommand(45),
                 diagonAlley.rollOutwards(0.3)));
     controller
         .leftBumper()
@@ -281,9 +281,9 @@ public class RobotContainer {
             Commands.parallel(
                 transfer.manualRollForwards(0),
                 floorRollers.rollInwardsCommand(0),
-                shooter.setVelocityCommand(0),
+                // shooter.setVelocityCommand(0),
                 diagonAlley.Break(0)));
-    controller.leftBumper().onFalse(shooter.setVelocityCommand(0));
+    // controller.leftBumper().onFalse(shooter.setVelocityCommand(0));
 
     // controller
     //     .leftBumper()

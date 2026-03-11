@@ -8,6 +8,7 @@
 package frc.robot.subsystems.superstructure;
 
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.math.util.Units;
 
 public class SuperstructureConstants {
   public static final int feederCanId = 21;
@@ -41,14 +42,38 @@ public class SuperstructureConstants {
   public static final double controlSystemsVelocityRadPerSec = -344.0; // -400
 
   public static final double latency = 0.15;
-  public static final double totalExitVelocity = 50; // constant speed
+  public static final double totalExitVelocity = 45; // constant speed
   // public static final double speedInterpolationData[][] = {
   //   {1.0, 1.0},
   //   {2.0, 2.0}
   // };
   public static final double hoodInterpolationData[][] = {
-    {1.0, 1.0},
-    {2.0, 2.0}
+    {27.25, 1.6},
+    {26, 1.6},
+    {27, 1.6},
+    {28, 1.6},
+    {29, 1.6},
+    {23, 1},
+    {24, 1},
+    {14, .523},
+    {15, .523},
+    {16, .523},
+    {17, .523},
+    {9, .266},
+    {10, .266},
+    {11, .266},
+    {4, .024},
+    {5, .024},
+    {6, .024},
+    {7, .024},
+    {21, .774},
+    {22, .774},
+    {23, .774},
+    {23, 1.267},
+    {24, 1.267},
+    {5, 0.001},
+    {6, 0.001},
+    {7, 0.001}
   };
 
   // public class SpeedInterpolationMap extends InterpolatingDoubleTreeMap {
@@ -70,7 +95,7 @@ public class SuperstructureConstants {
 
     public HoodInterpolationMap() {
       for (double[] i : hoodInterpolationData) {
-        map.put(i[0], i[1]);
+        map.put(Units.feetToMeters(i[0]), i[1]);
       }
     }
 
