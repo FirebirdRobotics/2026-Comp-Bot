@@ -187,9 +187,17 @@ public class Superstructure extends SubsystemBase {
 
     // Parallel because drive at angle takes a while to terminate
     return Commands.parallel(
+<<<<<<< HEAD
         // DriveCommands.joystickDriveAtAngle(
         //    drive, xSupplier, ySupplier, () -> new Rotation2d(angle)),
         // hood.CommandGoToAngle(pitch),
         Commands.sequence(shooter.setVelocityCommand(totalExitVelocity)));
+=======
+        DriveCommands.joystickDriveAtAngle(
+            drive, xSupplier, ySupplier, () -> new Rotation2d(angle)),
+        hood.CommandGoToAngle(pitch),
+        Commands.sequence(
+            shooter.setVelocityCommand(totalExitVelocity)));
+>>>>>>> 584d7bab6706960bc4619784ac2cd266b854b00c
   }
 }
