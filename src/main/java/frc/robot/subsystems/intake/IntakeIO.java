@@ -27,4 +27,10 @@ public interface IntakeIO {
 
   /** Run the roller in open loop -1.0..1.0. */
   public default void setRollerOpenLoop(double output) {}
+
+  /** Set an open-loop voltage on the pivot motor (default: no-op). */
+  public default void setVoltage(double volts) {}
+
+  /** Reset the pivot encoder to the given position (default: no-op). */
+  public default void resetEncoder(double position) {}
 }
