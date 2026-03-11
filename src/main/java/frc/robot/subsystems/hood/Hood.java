@@ -44,7 +44,12 @@ public class Hood extends SubsystemBase {
   }
 
   public Command CommandGoToAngle(double angle) {
-    return runOnce(() -> goToAngle(angle));
+    return runOnce(
+        () ->
+            goToAngle(
+                (angle < HoodConstants.lowestAngle)
+                    ? HoodConstants.lowestAngle
+                    : ((angle > HoodConstants.highestAngle) ? HoodConstants.highestAngle : angle)));
   }
 
   public Command CommandGoToLowestAngle() {
@@ -69,7 +74,7 @@ public class Hood extends SubsystemBase {
     return Commands.runOnce(
         () ->
             io.resetEncoder(
-                16.778206)); // Set this to 16.778206 when correcting shooter setpoint units later
+                0)); // Set this to 16.778206 when correcting shooter setpoint units later
   }
 
   @Override

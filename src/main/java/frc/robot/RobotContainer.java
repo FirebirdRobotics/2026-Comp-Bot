@@ -10,8 +10,6 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,6 +33,7 @@ import frc.robot.subsystems.floorRollers.FloorRollersIO;
 import frc.robot.subsystems.floorRollers.FloorRollersIOSim;
 import frc.robot.subsystems.floorRollers.FloorRollersIOTalonFX;
 import frc.robot.subsystems.hood.Hood;
+import frc.robot.subsystems.hood.HoodConstants;
 import frc.robot.subsystems.hood.HoodIO;
 import frc.robot.subsystems.hood.HoodIOSim;
 import frc.robot.subsystems.hood.HoodIOTalonFX;
@@ -58,7 +57,6 @@ import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
-import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -69,15 +67,15 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  */
 public class RobotContainer {
   // Subsystems
-  private final Drive drive;
-  private final Superstructure superstructure;
-  private final Vision vision;
-  private final Intake intake;
-  private final Hood hood;
-  private final Shooter shooter;
-  private final Transfer transfer;
-  private final FloorRollers floorRollers;
-  private final DiagonAlley diagonAlley;
+  public final Drive drive;
+  public final Superstructure superstructure;
+  public final Vision vision;
+  public final Intake intake;
+  public final Hood hood;
+  public final Shooter shooter;
+  public final Transfer transfer;
+  public final FloorRollers floorRollers;
+  public final DiagonAlley diagonAlley;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -105,7 +103,9 @@ public class RobotContainer {
             new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVision(
-                    VisionConstants.cameraName, VisionConstants.robotToCamera));
+                    VisionConstants.cameraNameRight, VisionConstants.robotToCameraRight),
+                new VisionIOPhotonVision(
+                    VisionConstants.cameraNameLeft, VisionConstants.robotToCameraLeft));
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -149,8 +149,10 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOPhotonVisionSim(
-                    VisionConstants.cameraName, VisionConstants.robotToCamera, drive::getPose));
+                new VisionIOPhotonVision(
+                    VisionConstants.cameraNameRight, VisionConstants.robotToCameraRight),
+                new VisionIOPhotonVision(
+                    VisionConstants.cameraNameLeft, VisionConstants.robotToCameraLeft));
 
         superstructure = new Superstructure(new SuperstructureIOSim());
         intake = new Intake(new IntakeIOSim());
@@ -201,6 +203,7 @@ public class RobotContainer {
         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addOption("Current Zeroing", hood.runCurrentZeroing());
     autoChooser.addDefaultOption(
         "Drive to Start Pose",
         DriveCommands.autoDriveToPose(drive, Constants.autonomousDestination));
@@ -232,13 +235,7 @@ public class RobotContainer {
                 drive,
                 () -> -controller.getLeftY(),
                 () -> -controller.getLeftX(),
-                () ->
-                    (DriverStation.getAlliance().isPresent()
-                                ? DriverStation.getAlliance().get()
-                                : Alliance.Red)
-                            == Alliance.Red
-                        ? Constants.redHubTarget
-                        : Constants.blueHubTarget));
+                () -> Constants.mirrorAlliance(Constants.hubTarget)));
 
     // Switch to X pattern when X button is pressed
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
@@ -276,23 +273,28 @@ public class RobotContainer {
     // controller.leftBumper().onTrue(shooter.setVelocityCommand(5)); // Test angle
     // controller.leftBumper().onFalse(shooter.setVelocityCommand(0));
 
+    // controller
+    //     .leftBumper()
+    //     .onTrue(
+    //         Commands.parallel(
+    //             transfer.manualRollBackward(0.6),
+    //             floorRollers.rollInwardsCommand(0.7),
+    //             shooter.setVelocityCommand(25),
+    //             diagonAlley.rollOutwards(0.3)));
+    // controller
+    //     .leftBumper()
+    //     .onFalse(
+    //         Commands.parallel(
+    //             transfer.manualRollForwards(0),
+    //             floorRollers.rollInwardsCommand(0),
+    //             shooter.setVelocityCommand(0),
+    //             diagonAlley.Break(0)));
+    // controller.leftBumper().onFalse(shooter.setVelocityCommand(0));
+
     controller
         .leftBumper()
-        .onTrue(
-            Commands.parallel(
-                transfer.manualRollBackward(0.6),
-                floorRollers.rollInwardsCommand(0.7),
-                shooter.setVelocityCommand(25),
-                diagonAlley.rollOutwards(0.3)));
-    controller
-        .leftBumper()
-        .onFalse(
-            Commands.parallel(
-                transfer.manualRollForwards(0),
-                floorRollers.rollInwardsCommand(0),
-                shooter.setVelocityCommand(0),
-                diagonAlley.Break(0)));
-    controller.leftBumper().onFalse(shooter.setVelocityCommand(0));
+        .onTrue(hood.CommandGoToAngle(HoodConstants.highestAngle - 0.5)); // Test angle
+    controller.leftBumper().onFalse(hood.CommandGoToLowestAngle());
 
     // controller.rightBumper().whileTrue(intake.goToFramePerimeterPositionCommand());
 
@@ -302,15 +304,12 @@ public class RobotContainer {
         .whileTrue(
             superstructure.shootOnTheFly(
                 drive,
+                hood,
+                shooter,
                 () -> -controller.getLeftY(),
                 () -> -controller.getLeftX(),
-                () ->
-                    (DriverStation.getAlliance().isPresent()
-                                ? DriverStation.getAlliance().get()
-                                : Alliance.Red)
-                            == Alliance.Red
-                        ? Constants.redHubTarget
-                        : Constants.blueHubTarget));
+                () -> Constants.mirrorAlliance(Constants.hubTarget)))
+        .onFalse(hood.CommandGoToLowestAngle());
 
     controller.y().onTrue(hood.runCurrentZeroing());
   }
