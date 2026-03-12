@@ -44,6 +44,7 @@ import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import frc.robot.subsystems.superstructure.Superstructure;
+import frc.robot.subsystems.superstructure.SuperstructureConstants;
 import frc.robot.subsystems.superstructure.SuperstructureIO;
 import frc.robot.subsystems.superstructure.SuperstructureIOSim;
 import frc.robot.subsystems.superstructure.SuperstructureIOSpark;
@@ -226,14 +227,16 @@ public class RobotContainer {
             () -> -controller.getRightX()));
 
     // Lock to center of field when A button is held
-    controller
-        .a()
-        .whileTrue(
-            DriveCommands.joystickRotateToward(
-                drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
-                () -> Constants.mirrorAlliance(Constants.hubTarget)));
+    // controller
+    //     .a()
+    //     .whileTrue(
+    //         DriveCommands.joystickRotateToward(
+    //             drive,
+    //             () -> -controller.getLeftY(),
+    //             () -> -controller.getLeftX(),
+    //             () -> Constants.mirrorAlliance(Constants.hubTarget)));
+    controller.a().whileTrue(transfer.manualRollBackward(1));
+    controller.a().onFalse(transfer.manualRollForwards(0));
 
     // Switch to X pattern when X button is pressed
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
@@ -276,10 +279,16 @@ public class RobotContainer {
                 intake.goToDeployedPositionCommand(),
                 intake.setRollerMotorPercentOutputCommand(0.5)));
 
-    controller.leftBumper().onTrue(intake.setRollerMotorPercentOutputCommand(0.3));
-    controller.leftBumper().onFalse(intake.setRollerMotorPercentOutputCommand(0));
-
-    controller.rightBumper().whileTrue(intake.goToFramePerimeterPositionCommand());
+    controller
+        .leftBumper()
+        .onTrue(
+            Commands.sequence(
+                intake.setRollerMotorPercentOutputCommand(0.3), intake.currentZeroFrontHardstop()));
+    controller
+        .leftBumper()
+        .onFalse(
+            Commands.sequence(
+                intake.setRollerMotorPercentOutputCommand(0), intake.currentZeroBackHardstop()));
 
     controller
         .leftTrigger()
@@ -302,9 +311,12 @@ public class RobotContainer {
 
     controller.rightTrigger().whileFalse(hood.CommandGoToLowestAngle());
 
-    controller.leftTrigger().whileTrue(superstructure.guardedShoot(drive, shooter));
+    // controller.leftTrigger().whileTrue(superstructure.guardedShoot(drive, shooter));
+    controller
+        .rightBumper()
+        .whileTrue(shooter.setVelocityCommand(SuperstructureConstants.totalExitVelocity));
 
-    controller.leftTrigger().whileFalse(shooter.setVelocityCommand(0));
+    controller.rightBumper().whileFalse(shooter.setVelocityCommand(0));
 
     controller
         .leftTrigger()

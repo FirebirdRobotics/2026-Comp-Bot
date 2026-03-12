@@ -90,12 +90,14 @@ public class SuperstructureConstants {
   //   }
   // }
 
+  public double compensationDistance = 12; // distance of overshoot (negative for undershoot)
+
   public class HoodInterpolationMap extends InterpolatingDoubleTreeMap {
     private InterpolatingDoubleTreeMap map = new InterpolatingDoubleTreeMap();
 
     public HoodInterpolationMap() {
       for (double[] i : hoodInterpolationData) {
-        map.put(Units.feetToMeters(i[0]), i[1]);
+        map.put(Units.feetToMeters(i[0] + compensationDistance), i[1]);
       }
     }
 
