@@ -4,4 +4,6 @@ package frc.robot.subsystems.shooter;
 public class ShooterConstants {
   public static final int shooterLeaderMotorID = 3; // left shooter
   public static final int shooterFollowerMotorID = 4; // right shooter
+
+  public static final double lineUpToHubVelocity = 27;
 }

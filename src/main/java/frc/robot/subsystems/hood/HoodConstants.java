@@ -7,4 +7,6 @@ public class HoodConstants {
 
   public static final double lowestAngle = 0.01;
   public static final double highestAngle = 1.5;
+
+  public static final double lineUpToHubHoodAngle = 0; // Need to test still
 }
