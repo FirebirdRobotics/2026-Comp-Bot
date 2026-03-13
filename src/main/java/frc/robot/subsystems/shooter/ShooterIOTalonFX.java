@@ -43,9 +43,9 @@ public class ShooterIOTalonFX implements ShooterIO {
 
     var slot0 = leaderConfig.Slot0;
     slot0.kS = 0.150390625;
-    slot0.kV = 0.126;
+    slot0.kV = 0.125;
     slot0.kA = 0.0;
-    slot0.kP = 0.0;
+    slot0.kP = 0.5625;
     slot0.kI = 0.0;
     slot0.kD = 0.0;
 
