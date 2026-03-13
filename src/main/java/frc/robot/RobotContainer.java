@@ -9,6 +9,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,6 +33,7 @@ import frc.robot.subsystems.floorRollers.FloorRollersIO;
 import frc.robot.subsystems.floorRollers.FloorRollersIOSim;
 import frc.robot.subsystems.floorRollers.FloorRollersIOTalonFX;
 import frc.robot.subsystems.hood.Hood;
+import frc.robot.subsystems.hood.HoodConstants;
 import frc.robot.subsystems.hood.HoodIO;
 import frc.robot.subsystems.hood.HoodIOSim;
 import frc.robot.subsystems.hood.HoodIOTalonFX;
@@ -40,11 +42,11 @@ import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterConstants;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import frc.robot.subsystems.superstructure.Superstructure;
-import frc.robot.subsystems.superstructure.SuperstructureConstants;
 import frc.robot.subsystems.superstructure.SuperstructureIO;
 import frc.robot.subsystems.superstructure.SuperstructureIOSim;
 import frc.robot.subsystems.superstructure.SuperstructureIOSpark;
@@ -207,6 +209,16 @@ public class RobotContainer {
         "Drive to Start Pose",
         DriveCommands.autoDriveToPose(drive, Constants.autonomousDestination));
 
+    autoChooser.addDefaultOption(
+        "Hub Shoot Static Auto",
+        Commands.parallel(
+            shooter.setVelocityCommand(ShooterConstants.lineUpToHubVelocity),
+            Commands.sequence(
+                Commands.waitSeconds(1),
+                Commands.parallel(
+                    transfer.manualRollBackward(0.6),
+                    floorRollers.rollInwardsCommand(0.7),
+                    diagonAlley.rollOutwards(0.3)))));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -267,7 +279,21 @@ public class RobotContainer {
     //                 drive)
     //             .ignoringDisable(true));
 
-    controller.b().whileTrue(DriveCommands.autoDriveToPose(drive, Constants.testAutopilotPosition));
+    // controller.b().whileTrue(DriveCommands.autoDriveToPose(drive,
+    // Constants.testAutopilotPosition));
+    controller
+        .b()
+        .onTrue(
+            Commands.parallel(
+                hood.CommandGoToAngle(HoodConstants.lineUpToHubHoodAngle),
+                shooter.setVelocityCommand(ShooterConstants.lineUpToHubVelocity)));
+
+    controller
+        .b()
+        .onFalse(
+            Commands.parallel(
+                hood.CommandGoToAngle(HoodConstants.lowestAngle),
+                shooter.setVelocityCommand(ShooterConstants.lineUpToHubVelocity)));
 
     // controller
     //     .leftBumper()
@@ -289,21 +315,12 @@ public class RobotContainer {
 
     controller
         .leftBumper()
-        .whileTrue(
-            Commands.sequence(
-                intake.goToDeployedPositionCommand(),
-                intake.setRollerMotorPercentOutputCommand(0.5)));
-
-    controller
-        .leftBumper()
         .onTrue(
             Commands.sequence(
-                intake.setRollerMotorPercentOutputCommand(0.3), intake.currentZeroFrontHardstop()));
+                intake.setRollerMotorPercentOutputCommand(0.7), intake.currentZeroFrontHardstop()));
     controller
         .leftBumper()
-        .onFalse(
-            Commands.sequence(
-                intake.setRollerMotorPercentOutputCommand(0), intake.currentZeroBackHardstop()));
+        .onFalse(Commands.sequence(intake.setRollerMotorPercentOutputCommand(0)));
 
     controller
         .leftTrigger()
@@ -315,23 +332,33 @@ public class RobotContainer {
 
     controller
         .rightTrigger()
-        .whileTrue(
-            superstructure.shootOnTheFlyNew(
-                drive,
-                hood,
-                shooter,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
-                () -> Constants.mirrorAlliance(Constants.hubTarget)));
+        .onTrue(
+            Commands.parallel(
+                transfer.manualRollForwards(0.6),
+                floorRollers.rollOutwards(0.7),
+                diagonAlley.rollOutwards(0.3)));
 
-    controller.rightTrigger().whileFalse(hood.CommandGoToLowestAngle());
+    // controller
+    //     .rightTrigger()
+    //     .whileTrue(
+    //         superstructure.shootOnTheFlyNew(
+    //             drive,
+    //             hood,
+    //             shooter,
+    //             () -> -controller.getLeftY(),
+    //             () -> -controller.getLeftX(),
+    //             () -> Constants.mirrorAlliance(Constants.hubTarget)));
+
+    // controller.rightTrigger().whileFalse(hood.CommandGoToLowestAngle());
 
     // controller.leftTrigger().whileTrue(superstructure.guardedShoot(drive, shooter));
-    controller
-        .rightBumper()
-        .whileTrue(shooter.setVelocityCommand(SuperstructureConstants.totalExitVelocity));
+    // controller
+    //     .rightBumper()
+    //     .whileTrue(shooter.setVelocityCommand(SuperstructureConstants.totalExitVelocity));
 
-    controller.rightBumper().whileFalse(shooter.setVelocityCommand(0));
+    // controller.rightBumper().whileFalse(shooter.setVelocityCommand(0));
+
+    controller.rightBumper().whileTrue(intake.currentZeroBackHardstop());
 
     controller
         .leftTrigger()
