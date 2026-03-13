@@ -219,12 +219,27 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Default command, normal field-relative drive
-    drive.setDefaultCommand(
-        DriveCommands.joystickDrive(
-            drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
+
+    // Select default drive mapping depending on alliance to keep field-relative
+    // orientation consistent for both alliances.
+    if (DriverStation.getAlliance().orElse(DriverStation.Alliance.Red)
+        == DriverStation.Alliance.Blue) {
+      // Blue: invert X/Y to match field orientation
+      drive.setDefaultCommand(
+          DriveCommands.joystickDrive(
+              drive,
+              () -> -controller.getLeftY(),
+              () -> -controller.getLeftX(),
+              () -> -controller.getRightX()));
+    } else {
+      // Red (and other): regular mapping
+      drive.setDefaultCommand(
+          DriveCommands.joystickDrive(
+              drive,
+              () -> controller.getLeftY(),
+              () -> controller.getLeftX(),
+              () -> controller.getRightX()));
+    }
 
     // Lock to center of field when A button is held
     // controller
