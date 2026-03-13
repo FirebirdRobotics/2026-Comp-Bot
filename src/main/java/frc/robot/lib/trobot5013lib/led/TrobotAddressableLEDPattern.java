@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 
 /** Add your docs here. */
 public interface TrobotAddressableLEDPattern {
-	public void setLEDs(AddressableLEDBuffer buffer);
-	default boolean isAnimated() { return false;}
+  public void setLEDs(AddressableLEDBuffer buffer);
+
+  default boolean isAnimated() {
+    return false;
+  }
 }
